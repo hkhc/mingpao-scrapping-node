@@ -18,16 +18,16 @@ export default class MingPaoPageV4Page extends AutoWebPage {
             };
         });
 
-        args.verbose && console.log("dimension", dimensions);
+        this.args.verbose && console.log("dimension", dimensions);
 
         const p1 = await this.page.$x('//img')
         const p1Size = await p1[0].evaluate(element => { return {
             width: element.clientWidth + 10,
             height: element.clientHeight + 10
         } });
-        args.verbose && console.log("p1size", p1Size);
+        this.args.verbose && console.log("p1size", p1Size);
 
-        args.verbose && console.log("output to "+outputFilename)
+        this.args.verbose && console.log("output to "+outputFilename)
         await this.page.pdf({
             path: outputFilename,
             margin: { left: 0, top: 0, right: 0, bottom: 0},
