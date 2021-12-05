@@ -44,6 +44,7 @@ const config = {
         MingPaoPageV5WrappedPage,
         MingPaoIssuePage
     ],
+    pubname: "mingpao",
     startUrl: "https://news.mingpao.com/php/login1.php?successurl=pns%2F%25E6%2598%258E%25E5%25A0%25B1%25E6%2596%25B0%25E8%2581%259E%25E7%25B6%25B2%2Fmain"
 }
 
@@ -109,8 +110,8 @@ export default class Scrapper {
             const sectionPage = await issuePage.toSection(s);
 
             version = (await sectionPage.isV5()) ? 'v5' : 'v4';
-            baseDir = `${this.args.basePath}/mingpao-${dateYear}/mingpao-${dateToString(date)}/${version}`
-            mergedFilename = `${baseDir}/mingpao-${version}-${dateToString( date)}.pdf`;
+            baseDir = `${this.args.basePath}/${this.site.config.pubname}-${dateYear}/${this.site.config.pubname}-${dateToString(date)}/${version}`
+            mergedFilename = `${baseDir}/${this.site.config.pubname}-${version}-${dateToString( date)}.pdf`;
 
             await fs.mkdir(baseDir, { recursive: true })
 

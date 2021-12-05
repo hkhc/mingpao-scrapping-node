@@ -32,7 +32,7 @@ export default class MingPaoIssuePage extends AutoWebPage {
             .replaceAll(/-----/g, "advertisement") // advertisement
             .replaceAll(/\//g, "-") // advertisement
             .replaceAll(/ \(.*\)/g, '');
-        return `mingpao-${version}-${pageId}-${pureName}.pdf`;
+        return `${this.site.config.pubname}-${version}-${pageId}-${pureName}.pdf`;
     }
 
     /*
