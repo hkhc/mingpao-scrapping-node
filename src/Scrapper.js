@@ -52,7 +52,6 @@ export default class Scrapper {
 
     constructor(args) {
         this.args = args;
-        this.site = new AutoWebSite(config, args);
     }
 
     async shouldSkip(id, outputFilename) {
@@ -86,7 +85,9 @@ export default class Scrapper {
 
         console.log(`Start downloading MingPao dated ${dateToString(date)} ...`);
 
-        const homePage = await this.site.getCurrentPage();
+        const site = new AutoWebSite(config, this.args);
+
+        const homePage = await site.getCurrentPage();
         const loginPage = (homePage instanceof MingPaoLoginPage) ? homePage : await homePage.getLoginPage();
         const calendarPage = await loginPage.login(this.getUsername(), this.getPassword());
         if (!calendarPage) return;
@@ -110,8 +111,8 @@ export default class Scrapper {
             const sectionPage = await issuePage.toSection(s);
 
             version = (await sectionPage.isV5()) ? 'v5' : 'v4';
-            baseDir = `${this.args.basePath}/${this.site.config.pubname}-${dateYear}/${this.site.config.pubname}-${dateToString(date)}/${version}`
-            mergedFilename = `${baseDir}/${this.site.config.pubname}-${version}-${dateToString( date)}.pdf`;
+            baseDir = `${this.args.basePath}/${site.config.pubname}-${dateYear}/${site.config.pubname}-${dateToString(date)}/${version}`
+            mergedFilename = `${baseDir}/${site.config.pubname}-${version}-${dateToString( date)}.pdf`;
 
             await fs.mkdir(baseDir, { recursive: true })
 
@@ -127,8 +128,8 @@ export default class Scrapper {
 
                 console.log(`page ${i.name} (${version})`)
 
-                await this.site.loadPage(i.link1);
-                const p2 = await this.site.loadPage(i.link2);
+                await site.loadPage(i.link1);
+                const p2 = await site.loadPage(i.link2);
 
                 await p2.pdf(outputFilename);
             }
@@ -147,7 +148,7 @@ export default class Scrapper {
             await merger.save(mergedFilename);
         }
 
-        await this.site.close();
+        await site.close();
 
     }
 }
