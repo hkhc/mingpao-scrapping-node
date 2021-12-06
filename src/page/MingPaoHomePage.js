@@ -4,8 +4,8 @@ export default class MingPaoHomePage extends AutoWebPage {
 
     static selector = "//li[@id='headerlogin']/a";
 
-    constructor(args, site, page) {
-        super(args, site, page);
+    constructor(site, page) {
+        super(site, page);
     }
 
     async getLoginPage() {

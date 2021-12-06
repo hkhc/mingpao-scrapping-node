@@ -5,8 +5,8 @@ export default class MingPaoCalendarPage extends AutoWebPage {
 
     static selector = "//a[@target='mpepaper']";
 
-    constructor(args, site, page) {
-        super(args, site, page);
+    constructor(site, page) {
+        super(site, page);
     }
 
     async getCurrentYear() {

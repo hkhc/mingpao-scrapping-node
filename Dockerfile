@@ -1,6 +1,6 @@
 FROM node:16.13.1-alpine3.14
 
-RUN apk update && apk add --no-cache nmap && \
+RUN apk update && apk add --no-cache nmap mesa-gles && \
     echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
     echo @edge http://nl.alpinelinux.org/alpine/edge/main >> /etc/apk/repositories && \
     apk update && \

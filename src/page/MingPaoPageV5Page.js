@@ -5,13 +5,13 @@ export default class MingPaoPageV5Page extends AutoWebPage {
 
     static selector = "//div[@id='main']/div[@id='controls']";
 
-    constructor(args, site, page) {
-        super(args, site, page);
+    constructor(site, page) {
+        super(site, page);
     }
 
     async pdfStream(options) {
 
-        this.args.verbose && console.log("output to "+options.path)
+        this.aite.args.verbose && console.log("output to "+options.path)
         const pdfStream = await this.page.createPDFStream(options);
 
         return new Promise((resolve, _) => {

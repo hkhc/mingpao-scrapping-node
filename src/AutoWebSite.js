@@ -5,9 +5,9 @@ export default class AutoWebSite {
     constructor(config, args) {
         this.config = config;
         this.args = args;
-        this.browser = null
-        this.browserPage = null
-        this.currentPage = null
+        this.browser = null;
+        this.browserPage = null;
+        this.currentPage = null;
     }
 
     async lookupAutoWebPage(page) {
@@ -15,7 +15,7 @@ export default class AutoWebSite {
             const selected = await page.$x(factory.selector)
             if (selected.length > 0) {
                 this.args.verbose && console.log(`Page ${factory.name} is found`);
-                return new factory(this.args, this, page)
+                return new factory(this, page)
             }
         }
         this.args.verbose && console.log("Page lookup failed");
@@ -27,17 +27,22 @@ export default class AutoWebSite {
         if (this.browser === null) {
             console.log("Starting browser ...");
             this.browser = await Puppeteer.launch( {
-                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+                args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--mute-audio'],
+                dumpio: this.args.verbose,
                 headless: true
             })
+            console.log("Browser started ...");
         }
-        return this.browser
+        return this.browser;
     }
 
     async getBrowserPage() {
 
         if (this.browserPage === null) {
-            this.browserPage = (await this.getBrowser()).newPage();
+            const browser = await this.getBrowser()
+            this.args.verbose && console.log("Get browser page");
+            this.browserPage = await browser.newPage();
+            this.args.verbose && console.log("Get browser page succeed");
         }
         return this.browserPage;
     }
@@ -46,11 +51,12 @@ export default class AutoWebSite {
         if (this.currentPage === null) {
             this.currentPage = await this.loadPage(this.config.startUrl)
         }
-        return this.currentPage
+        return this.currentPage;
     }
 
     async loadPage(url) {
         const bp = await this.getBrowserPage();
+        this.args.verbose && console.log(`Loading page ${url}`)
         await Promise.all([
             bp.goto(url),
             bp.waitForNavigation()
@@ -58,13 +64,15 @@ export default class AutoWebSite {
         return this.lookupAutoWebPage(bp);
     }
 
-    // getStartPage(): Puppeteer.Browser {
-    //
-    // }
-
     async close() {
-        console.log("Shutting browser ...");
-        (await this.getBrowser()).close();
+        if (this.browser !== null) {
+            console.log("Stopping browser ...");
+            this.browserPage = null;
+            this.currentPage = null;
+            await this.browser.close();
+            console.log("Browser stopped ...");
+            this.browser = null;
+        }
     }
 
 }

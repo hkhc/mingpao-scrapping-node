@@ -89,8 +89,10 @@ export default class Scrapper {
 
         const homePage = await site.getCurrentPage();
         const loginPage = (homePage instanceof MingPaoLoginPage) ? homePage : await homePage.getLoginPage();
+        console.log("Logging in");
         const calendarPage = await loginPage.login(this.getUsername(), this.getPassword());
         if (!calendarPage) return;
+        console.log(`Getting Issue ${dateToString(date)}`);
         const issuePage = await calendarPage.getIssue(date);
         if (!issuePage) return;
 

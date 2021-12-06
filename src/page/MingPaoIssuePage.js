@@ -4,8 +4,8 @@ export default class MingPaoIssuePage extends AutoWebPage {
 
     static selector = "//div[@class='number_wrap']/a[./img[contains(@src,'icon_')]]";
 
-    constructor(args, site, page) {
-        super(args, site, page);
+    constructor(site, page) {
+        super(site, page);
     }
 
     async getSectionList() {

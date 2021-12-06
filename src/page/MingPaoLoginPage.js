@@ -5,8 +5,8 @@ export default class MingPaoLoginPage extends AutoWebPage {
 
     static selector = "//form[@method='post' and contains(@action,'../php/login2.php')]";
 
-    constructor(args, site, page) {
-        super(args, site, page);
+    constructor(site, page) {
+        super(site, page);
     }
 
     async login(username, password) {

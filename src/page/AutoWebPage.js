@@ -1,9 +1,9 @@
 export default class AutoWebPage {
 
-    constructor(args, site, page) {
-        this.args = args;
+    constructor(site, page) {
         this.site = site;
         this.page = page;
+        this.page.setDefaultNavigationTimeout(60000);
     }
 
     getTextContent(element) {
