@@ -11,7 +11,7 @@ export default class MingPaoPageV5Page extends AutoWebPage {
 
     async pdfStream(options) {
 
-        this.aite.args.verbose && console.log("output to "+options.path)
+        this.site.args.verbose && console.log("output to "+options.path)
         const pdfStream = await this.page.createPDFStream(options);
 
         return new Promise((resolve, _) => {
