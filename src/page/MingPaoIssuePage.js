@@ -18,7 +18,7 @@ export default class MingPaoIssuePage extends AutoWebPage {
         const xpath = `//div[@class='number_wrap']/a[img[@title='${section}']]`;
         const elements = await this.page.$x(xpath);
         if (elements.length === 0) {
-            throw `Section ${section} is not found`
+            throw new Error(`Section ${section} is not found`);
         }
         await Promise.all([
             elements[0].click(),

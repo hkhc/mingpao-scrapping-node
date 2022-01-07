@@ -1,3 +1,4 @@
+import fsCallback from 'fs';
 import AutoWebPage from './AutoWebPage.js';
 
 export default class MingPaoPageV4Page extends AutoWebPage {
@@ -6,6 +7,20 @@ export default class MingPaoPageV4Page extends AutoWebPage {
 
     constructor(site, page) {
         super(site, page);
+    }
+
+    async pdfStream(options) {
+
+        const pdfStream = await this.page.createPDFStream(options);
+
+        return new Promise((resolve, _) => {
+            const writeStream = fsCallback.createWriteStream(options.path);
+            pdfStream.pipe(writeStream);
+            pdfStream.on('end', async() => {
+                resolve()
+            });
+        })
+
     }
 
     async pdf(outputFilename) {
@@ -28,7 +43,8 @@ export default class MingPaoPageV4Page extends AutoWebPage {
         this.site.args.verbose && console.log("p1size", p1Size);
 
         this.site.args.verbose && console.log("output to "+outputFilename)
-        await this.page.pdf({
+
+        return this.pdfStream({
             path: outputFilename,
             margin: { left: 0, top: 0, right: 0, bottom: 0},
             width: p1Size.width,

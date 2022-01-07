@@ -2,12 +2,21 @@ import Puppeteer from 'puppeteer';
 
 export default class AutoWebSite {
 
-    constructor(config, args) {
+    constructor(config, args, puppeteer = Puppeteer) {
         this.config = config;
+        this.puppeteer = puppeteer;
         this.args = args;
         this.browser = null;
         this.browserPage = null;
         this.currentPage = null;
+    }
+
+    async launchBrowser() {
+        return this.puppeteer.launch( {
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--mute-audio'],
+            dumpio: this.args.verbose,
+            headless: true
+        })
     }
 
     async lookupAutoWebPage(page) {
@@ -19,19 +28,15 @@ export default class AutoWebSite {
             }
         }
         this.args.verbose && console.log("Page lookup failed");
-        throw "Failed to lookup page";
+        throw new Error("Failed to lookup page");
     }
 
     async getBrowser() {
 
         if (this.browser === null) {
-            console.log("Starting browser ...");
-            this.browser = await Puppeteer.launch( {
-                args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu', '--mute-audio'],
-                dumpio: this.args.verbose,
-                headless: true
-            })
-            console.log("Browser started ...");
+            this.args.verbose && console.log("Starting browser ...");
+            this.browser = await this.launchBrowser();
+            this.args.verbose && console.log("Browser started ...");
         }
         return this.browser;
     }
