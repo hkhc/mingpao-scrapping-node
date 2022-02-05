@@ -18,7 +18,7 @@ printf -v filtered_param_list "%s " "${filtered_param[@]}"
 filtered_param_list=${filtered_param_list%,}
 
 # set default path if it is not specified
-BASE_PATH=${BASE_PATH:-/Users/hc/work/mingpao}
+BASE_PATH=${BASE_PATH:-~/work/mingpao}
 
 mkdir -p "$BASE_PATH"
 
