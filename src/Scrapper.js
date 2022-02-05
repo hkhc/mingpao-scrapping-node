@@ -90,9 +90,7 @@ export function parseIssueFile(filename) {
 
     let re = /[0-9]{1,4}-[0-9]{1,2}-[0-9]{1,2}/g
     let found = filename.match(re)
-    let d = dateFromString(found[0])
-
-    return d;
+    return dateFromString(found[0])
 }
 
 export async function fillRecent(args, days) {
@@ -195,6 +193,8 @@ export default class Scrapper {
 
         calendarPage = await calendarPage.toYear(dateYear);
         const issuePage = await calendarPage.getIssue(date);
+
+        if (!issuePage) return
 
         const version = (await issuePage.isV5()) ? 'v5' : 'v4';
         const issueFileModel = new IssueFileModel(site.args.basePath, site.config.pubname);

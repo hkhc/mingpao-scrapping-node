@@ -5,10 +5,9 @@ export const dateToString = (date) => {
 }
 
 export const dateFromString = (dateString) => {
-    const d = new Date(
+    return new Date(
         parseInt(dateString.substring(0,4)),
         parseInt(dateString.substring(5,7))-1,
         parseInt(dateString.substring(8,10)),
         0,0,0,0);
-    return d
 }

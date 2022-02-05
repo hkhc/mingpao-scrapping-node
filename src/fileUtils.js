@@ -5,7 +5,7 @@ function isErrorNotFound(err) {
 }
 
 export const isFolder_asyncAwait = async (path) => {
-    // the result can be either false (from the caught error) or it can be an fs.stats object
+    // the result can be either false (from the caught error) or it can be a fs.stats object
     const result = await fs.stat(path).catch(err => {
         if (isErrorNotFound(err)) {
             return false;

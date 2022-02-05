@@ -1,4 +1,4 @@
-import Scrapper, {fillRecent, getRecentRange, getResultFile, IssueFileModel, parseIssueFile} from "./Scrapper.js";
+import {fillRecent, getRecentRange, getResultFile, IssueFileModel, parseIssueFile} from "./Scrapper.js";
 
 test("date test", () => {
 
