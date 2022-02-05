@@ -51,7 +51,7 @@ export default class MingPaoCalendarPage extends AutoWebPage {
     // yyyy-mm-dd
     async getIssue(date) {
 
-        const xpath = `(//div[@class='cal_main']/div[@class='cal'][${date.getMonth()+1}]//td[@bgcolor='FFFFCC']/a)[${date.getDate()}]`;
+        const xpath = `(//div[@class='cal_main']/div[@class='cal'][${date.getMonth()+1}]//td[@bgcolor='FFFFCC']/a)[.='${date.getDate()}']`;
         const dayCell = await this.page.$x(xpath)
 
         try {
@@ -60,6 +60,7 @@ export default class MingPaoCalendarPage extends AutoWebPage {
             return await this.site.lookupAutoWebPage(newPage);
         } catch (e) {
             console.log(`The issue (${dateToString(date)}) is not available`);
+            return null;
         }
     }
 
