@@ -1,3 +1,4 @@
+import {setTimeout} from "timers/promises";
 import AutoWebPage from './AutoWebPage.js';
 
 export default class MingPaoIssuePage extends AutoWebPage {
@@ -20,6 +21,7 @@ export default class MingPaoIssuePage extends AutoWebPage {
         if (elements.length === 0) {
             throw new Error(`Section ${section} is not found`);
         }
+        await setTimeout(500);
         await Promise.all([
             elements[0].click(),
             this.page.waitForNavigation()
