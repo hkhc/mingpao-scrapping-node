@@ -13,6 +13,7 @@ import MingPaoLoginPage from './page/MingPaoLoginPage.js';
 import MingPaoPageV4Page from './page/MingPaoPageV4Page.js';
 import MingPaoPageV5Page from './page/MingPaoPageV5Page.js';
 import {dateFromString, dateToString} from './utils.js';
+import MingPaoConsentPage from "./page/MingPaoConsentPage.js";
 
 class MingPaoPageV4WrappedPage extends AutoWebPage {
 
@@ -37,6 +38,7 @@ class MingPaoPageV5WrappedPage extends AutoWebPage {
 const config = {
     pages: [
         MingPaoHomePage,
+        MingPaoConsentPage,
         MingPaoLoginFailurePage,
         MingPaoLoginPage,
         MingPaoCalendarPage,
@@ -44,7 +46,7 @@ const config = {
         MingPaoPageV4WrappedPage,
         MingPaoPageV5Page,
         MingPaoPageV5WrappedPage,
-        MingPaoIssuePage
+        MingPaoIssuePage,
     ],
     pubname: "mingpao",
     startUrl: "https://news.mingpao.com/php/login1.php?successurl=pns%2F%25E6%2598%258E%25E5%25A0%25B1%25E6%2596%25B0%25E8%2581%259E%25E7%25B6%25B2%2Fmain"
@@ -172,7 +174,10 @@ export default class Scrapper {
     }
 
     async loginStep(site) {
-        const homePage = await site.getCurrentPage();
+        let homePage = await site.getCurrentPage();
+        if (homePage instanceof MingPaoConsentPage) {
+            homePage = await homePage.consent();
+        }
         const loginPage = (homePage instanceof MingPaoLoginPage) ? homePage : await homePage.getLoginPage();
         console.log("Logging in");
 
